@@ -1,5 +1,4 @@
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import Grid from "../template/grid";
 import IconButton from "../template/IconButton";
 
@@ -18,9 +17,12 @@ export default props => (
             </Grid>
 
             <Grid cols="12 3 2">
-                <IconButton style="primary w-100"
+                <IconButton style="primary w-40 m-2"
                     icon={faPlus}
                     onClick={props.handleAdd} />
+                <IconButton style="info w-40"
+                    icon={faSearch}
+                    onClick={props.handleSearch} />
             </Grid>
         </div>
     </div >

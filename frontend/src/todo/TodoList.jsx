@@ -1,4 +1,4 @@
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons"
+import { faCheck, faTrashAlt, faUndo } from "@fortawesome/free-solid-svg-icons"
 import IconButton from "../template/IconButton"
 
 const timeZone = "America/Sao_Paulo"
@@ -20,11 +20,28 @@ export default props => {
         return list.map(item => (
             <tr key={item._id}>
                 <td>{item.description}</td>
-                <td>{item.done ? 'Concluído' : 'Pendente'}</td>
+                <td>
+                    <span
+                        className={`px-2 py-1 rounded ${item.done ?
+                            'bg-success text-white' : 'bg-warning text-dark'}`}
+                    >
+                        {item.done ? 'Concluído' : 'Pendente'}
+                    </span>
+                </td>
                 <td>{dateToString(item.createdAt)}</td>
-                <td><IconButton style="danger w-40"
-                    icon={faTrashAlt}
-                    onClick={() => props.handleDelete(item._id)} /></td>
+                <td>
+                    <IconButton style="success w-40 m-1"
+                        hide={item.done}
+                        icon={faCheck}
+                        onClick={() => props.handleChangeDone(item._id, true)} />
+                    <IconButton style="warning w-40 m-1"
+                        hide={!item.done}
+                        icon={faUndo}
+                        onClick={() => props.handleChangeDone(item._id, false)} />
+                    <IconButton style="danger w-40 m-1"
+                        icon={faTrashAlt}
+                        onClick={() => props.handleDelete(item._id)} />
+                </td>
             </tr>
         ))
     }

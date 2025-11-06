@@ -18,7 +18,7 @@ export default function Todo() {
 
     function handleAdd() {
         axios.post(URL, { description })
-            .then(resp => {
+            .then(() => {
                 setDescription('')
                 refresh()
             })
@@ -26,15 +26,28 @@ export default function Todo() {
 
     function handleDelete(id) {
         axios.delete(`${URL}/${id}`)
-            .then(resp => {
-                refresh()
+            .then(() => {
+                refresh(description)
             })
     }
 
 
-    function refresh() {
-        axios.get(URL)
+    function handleChangeDone(id, isDone) {
+        axios.patch(`${URL}/${id}/done/${isDone}`)
+            .then(() => {
+                refresh(description)
+            })
+    }
+
+    function refresh(descriptionFilter = '') {
+        const filter = descriptionFilter ? `?description=${descriptionFilter}` : ''
+
+        axios.get(`${URL}${filter}`)
             .then(resp => setlist(resp.data))
+    }
+
+    function handleSearch() {
+        refresh(description)
     }
 
     return (
@@ -43,10 +56,12 @@ export default function Todo() {
             <TodoForm
                 description={description}
                 setDescription={setDescription}
-                handleAdd={handleAdd} />
+                handleAdd={handleAdd}
+                handleSearch={handleSearch} />
             <TodoList
                 list={list}
                 handleDelete={handleDelete}
+                handleChangeDone={handleChangeDone}
             />
         </div>
     )
