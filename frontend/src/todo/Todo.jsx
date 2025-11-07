@@ -50,6 +50,11 @@ export default function Todo() {
         refresh(description)
     }
 
+    function handleClear() {
+        setDescription('')
+        refresh()
+    }
+
     return (
         <div>
             <PageHeader name="Tarefas" small="Cadastro" />
@@ -57,7 +62,8 @@ export default function Todo() {
                 description={description}
                 setDescription={setDescription}
                 handleAdd={handleAdd}
-                handleSearch={handleSearch} />
+                handleSearch={handleSearch}
+                handleClear={handleClear} />
             <TodoList
                 list={list}
                 handleDelete={handleDelete}
