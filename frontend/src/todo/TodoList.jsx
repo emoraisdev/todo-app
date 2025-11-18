@@ -1,10 +1,14 @@
 import { faCheck, faTrashAlt, faUndo } from "@fortawesome/free-solid-svg-icons"
 import IconButton from "../template/IconButton"
+import { useSelector } from "react-redux"
 
 const timeZone = "America/Sao_Paulo"
 const ptBr = "pt-BR"
 
 export default props => {
+
+    const todoList = useSelector(state => state.todoList)
+
 
     function dateToString(isoDate) {
         const d = new Date(isoDate);
@@ -15,7 +19,7 @@ export default props => {
 
     function renderRows() {
 
-        const list = props.list || []
+        const list = todoList || []
 
         return list.map(item => (
             <tr key={item._id}>

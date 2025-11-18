@@ -4,13 +4,17 @@ import axios from 'axios';
 import PageHeader from "../template/PageHeader";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
+import { useDispatch, useSelector } from "react-redux";
+import { addAll } from "./todoListSlice";
+import { setDescription } from "./todoFormSlice";
 
 const URL = 'http://localhost:3003/api/todos'
 
 export default function Todo() {
 
-    const [description, setDescription] = useState('')
-    const [list, setlist] = useState([])
+    const { description } = useSelector(state => state.todoForm);
+    const dispatch = useDispatch()
+
 
     useEffect(() => {
         refresh()
@@ -19,7 +23,7 @@ export default function Todo() {
     function handleAdd() {
         axios.post(URL, { description })
             .then(() => {
-                setDescription('')
+                dispatch(setDescription(''))
                 refresh()
             })
     }
@@ -43,7 +47,7 @@ export default function Todo() {
         const filter = descriptionFilter ? `?description=${descriptionFilter}` : ''
 
         axios.get(`${URL}${filter}`)
-            .then(resp => setlist(resp.data))
+            .then(resp => dispatch(addAll(resp.data)))
     }
 
     function handleSearch() {
@@ -51,7 +55,7 @@ export default function Todo() {
     }
 
     function handleClear() {
-        setDescription('')
+        dispatch(setDescription(''))
         refresh()
     }
 
@@ -59,13 +63,10 @@ export default function Todo() {
         <div>
             <PageHeader name="Tarefas" small="Cadastro" />
             <TodoForm
-                description={description}
-                setDescription={setDescription}
                 handleAdd={handleAdd}
                 handleSearch={handleSearch}
                 handleClear={handleClear} />
             <TodoList
-                list={list}
                 handleDelete={handleDelete}
                 handleChangeDone={handleChangeDone}
             />
